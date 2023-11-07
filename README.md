@@ -4,10 +4,10 @@ Core functionality based Lisp interpreter. Includes primitive functions from pur
 (my-top) 
 ```
 Interpreted symbols/functions
-[X] Eval Atom
-[] Eval Primitive Functions
-[] Eval User Functions
-[] Eval Lambda Functions
-[] Eval Defun
-[] Eval Setq
-[] Eval Cond
+- [X] Eval Atom
+- [] Eval Primitive Functions
+- [] Eval User Functions
+- [] Eval Lambda Functions
+- [] Eval Defun
+- [] Eval Setq
+- [] Eval Cond
