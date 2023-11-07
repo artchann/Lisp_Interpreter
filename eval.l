@@ -58,7 +58,7 @@
 (defun my-eval-atom (e alist)
 ;; how do you evaluate an atom???
 ;; Remember there are special cases: T, NIL, MY-SYMBOL, 10, "Hello"
-    (cond ((eq e t) t)
+    (cond ((eq e 't) t)
         ( (null e) nil)
         ( (numberp e) e)
         ( (stringp e) e)
@@ -117,19 +117,26 @@
            (eq (my-eval (car args) alist) (my-eval (cadr args) alist)))
           ;; I wrote the first one, eq, for you, you write the rest
           ((eq fn 'car)
+            ;(cond (null args) nil)
+            (t (my-eval (car (car args)) alist))
           )
           ((eq fn 'cdr)
+            (t (cdr (cdr args)))
           )
           ((eq fn 'cons)
           )
           ((eq fn 'quote)
+            (car args)
+          )
+          ((eq fn 'print)
+            (car args)
           )
           ((eq fn 'setq) (my-eval-setq ;; you'll have to figure out the arguments to pass
                                 nil nil))
           ((eq fn 'cond) (my-eval-cond args alist))
           ((eq fn 'defun) (my-eval-defun args alist))
           ((eq fn 'eval) (my-eval (my-eval (car args) alist) alist))
-          (T (my-apply nil ;; get the lambda from the alist
+          (T (my-apply (my-assoc fn alist) ;; get the lambda from the alist
                        args alist))
     )
 )
