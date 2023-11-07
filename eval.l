@@ -124,6 +124,9 @@
             (t (cdr (cdr args)))
           )
           ((eq fn 'cons)
+          ;;EVALUATING OUR QUOTES AS WELL... DO WE NEED TO SEND IT BACK TO MY-EVAL SO THAT IT RETURNS JUST THE LIST WHEN WE PASS IN QUOTES?
+            (cond ((atom (cdr args)) (cons (car args) (cdr args)))
+            (t (cons (car args) (car (cdr args)))))
           )
           ((eq fn 'quote)
             (car args)
@@ -136,7 +139,7 @@
           ((eq fn 'cond) (my-eval-cond args alist))
           ((eq fn 'defun) (my-eval-defun args alist))
           ((eq fn 'eval) (my-eval (my-eval (car args) alist) alist))
-          (T (my-apply (my-assoc fn alist) ;; get the lambda from the alist
+          (T (my-apply nil ;; get the lambda from the alist
                        args alist))
     )
 )
