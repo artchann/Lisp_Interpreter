@@ -5,7 +5,7 @@ Core functionality based Lisp interpreter. Includes primitive functions from pur
 ```
 Interpreted symbols/functions
 - [X] Eval Atom
-- [] Eval Primitive Functions
+- [X] Eval Primitive Functions
 - [] Eval User Functions
 - [] Eval Lambda Functions
 - [] Eval Defun
