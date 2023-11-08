@@ -48,6 +48,8 @@
 ;; This one is done
 
 (defun my-eval (e alist)
+    ;;(print (car e))
+    ;;(print (cdr e))
     (cond ((atom e) (my-eval-atom e alist))
           (t (my-apply (car e) (cdr e) alist))
     )
@@ -123,14 +125,15 @@
             (car args)
           )
           ((eq fn 'car)
+          ;;EVALUATING OUR QUOTES AS WELL... DO WE NEED TO SEND IT BACK TO MY-EVAL SO THAT IT RETURNS JUST THE LIST WHEN WE PASS IN QUOTES?
             (car(my-eval (car args) alist))
           )
           ((eq fn 'cdr)
             (cdr(my-eval (car args) alist))
           )
           ((eq fn 'cons)
-          ;;EVALUATING OUR QUOTES AS WELL... DO WE NEED TO SEND IT BACK TO MY-EVAL SO THAT IT RETURNS JUST THE LIST WHEN WE PASS IN QUOTES?
-            (cons (my-eval (car args) alist) (my-eval (car(cdr args)) alist))
+
+            (cons (my-eval (car args) alist) (my-eval (car (cdr args)) alist))
           )
 
           ((eq fn 'print)
@@ -143,14 +146,14 @@
           ((eq fn '+)
             (cond ((null args) 0)
                 ((null (cdr args)) (my-eval (car args) alist))
-                (t (+ (my-eval (car args) alist) (my-apply-atom '+ (cdr args) alist))))
+                (t (+ (my-eval (car args) alist) (my-eval (car (cdr args)) alist))))
           )      
           ((eq fn 'setq) (my-eval-setq ;; you'll have to figure out the arguments to pass
-                                nil nil))
+                                (car args) (my-eval (car (cdr args)) alist)))
           ((eq fn 'cond) (my-eval-cond args alist))
           ((eq fn 'defun) (my-eval-defun args alist))
           ((eq fn 'eval) (my-eval (my-eval (car args) alist) alist))
-          (T (my-apply nil ;; get the lambda from the alist
+          (T (my-apply (my-assoc fn alist) ;; get the lambda from the alist
                        args alist))
     )
 )
@@ -164,9 +167,14 @@
 ;; You need to write this one.
 
 (defun my-eval-setq (var val)
-nil
 ;; just push a new association of the var and its evaluated val onto the
 ;; global alist
+    ;;(setq global-alist (cons (cons var val) global-alist))
+    ;;(cons (cons var val) global-alist)
+    ;; append first element as an atom to the list of associated vars,
+    ;; then push it onto the galist
+    ;;(my-eval var global-alist)
+    nil
 )
 
 ;; You need to write this one.  You should know how cond works at this point.
