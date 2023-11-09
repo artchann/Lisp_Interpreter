@@ -1,13 +1,21 @@
 # Lisp_Interpreter
-Core functionality based Lisp interpreter. Includes primitive functions from pure lisp as well as user defined interpretation. Lisp commands shared with CommonLisp Run with 
+Core functionality based Lisp interpreter built on Allegro CL. Includes primitive functions from common lisp as well as user defined functions. Commands shared with CommonLisp.  Run with 
+```
+alisp
+```
+```
+(load "eval.l")
+```
 ``` 
 (my-top) 
 ```
+
 Interpreted symbols/functions
 - [X] Eval Atom
 - [X] Eval Primitive Functions
+        Includes: CAR, CDR, CONS, COND, DEFUN, EQ, QUOTE, PRINT
 - [] Eval User Functions
-- [] Eval Lambda Functions
+- [X] Eval Lambda Functions
 - [] Eval Defun
-- [] Eval Setq
-- [] Eval Cond
+- [X] Eval Setq
+- [X] Eval Cond
