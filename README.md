@@ -1,5 +1,5 @@
 # Lisp_Interpreter
-Core functionality based Lisp interpreter built on Allegro CL. Includes primitive functions from common lisp as well as user defined functions. Commands shared with CommonLisp.  Run with 
+Core functionality based Lisp interpreter built on Allegro CL 9.0. Includes primitive functions from common lisp as well as user defined functions. Commands shared with CommonLisp.  Run on linux shell with 
 ```
 alisp
 ```
