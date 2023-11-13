@@ -64,7 +64,7 @@
         ( (null e) nil)
         ( (numberp e) e)
         ( (stringp e) e)
-        (t (my-assoc e alist)))
+        (t (cdr(my-assoc e alist))))
         ;; how do we account for symbols and functions that have the same name?
 
     
@@ -82,7 +82,9 @@
 ;; in l and returns the value of the last expression
 
 (defun my-eval-list (l alist)
-  nil
+    (cond ((null L) nil)
+        ((null (cdr l)) (my-eval (car l) alist))
+        (t (my-eval (car l) alist) (my-eval-list (cdr l) alist)))
 )
 
 ;; You need to write this one.
@@ -92,6 +94,7 @@
 ;; new scoping context (i.e., that becomes the new alist for recursive
 ;; evaluation of the function body.  Return the value of the last 
 ;; expression in the body (using eval-list)).
+    (my-eval-list(cdr (cdr fn)) (my-bind-formals (car (cdr fn)) args alist))
 )
 
 ;; You need to write this one.
@@ -105,7 +108,8 @@
 ;; e.g., (my-bind-formals '(a) '((add 1 b)) '((b . 10)))
 ;; will return ((a . 11) (b . 10))
 ;; Note there will be one actual parameter for each formal parameter.
-
+    (cond ((null formals) alist)
+    (t (cons (cons (car formals) (my-eval (car actuals) alist)) (my-bind-formals (cdr formals) (cdr actuals)))))
 )
 
 ;; You need to write this one.  Handle the primitives as special cases, then
@@ -148,13 +152,15 @@
                 ((null (cdr args)) (my-eval (car args) alist))
                 (t (+ (my-eval (car args) alist) (my-eval (car (cdr args)) alist))))
           )      
-          ((eq fn 'setq) (my-eval-setq ;; you'll have to figure out the arguments to pass
+
+          ((eq fn 'setq)(my-eval-setq ;; you'll have to figure out the arguments to pass
                                 (car args) (my-eval (car (cdr args)) alist)))
+
           ((eq fn 'cond) (my-eval-cond args alist))
           ((eq fn 'defun) (my-eval-defun args alist))
           ((eq fn 'eval) (my-eval (my-eval (car args) alist) alist))
-          (T (my-apply (my-assoc fn alist) ;; get the lambda from the alist
-                       args alist))
+          (T nil)
+          ;;(T (my-apply (my-assoc fn alist) args alist))
     )
 )
 
@@ -169,19 +175,25 @@
 (defun my-eval-setq (var val)
 ;; just push a new association of the var and its evaluated val onto the
 ;; global alist
-    ;;(setq global-alist (cons (cons var val) global-alist))
+    ;;(print (cons var val))
     ;;(cons (cons var val) global-alist)
     ;; append first element as an atom to the list of associated vars,
     ;; then push it onto the galist
-    ;;(my-eval var global-alist)
-    nil
+    (setq global-alist (cons (cons var val) global-alist))
+    (my-eval var global-alist)
 )
 
 ;; You need to write this one.  You should know how cond works at this point.
 ;; Remember, cond clauses have one or more expressions in each clause.
 
+;; ( (my-eval (car (car clauses) alist)) (my-eval (cdr (car clauses))))
+
 (defun my-eval-cond (clauses alist)
-nil
+    (cond ((null clauses) nil)
+        ;; if you can find the eval then do it? otherwise return list of nums?
+        ( (my-eval (car (car clauses)) alist) (my-eval (cdr (car clauses)) alist))
+        
+        (t (my-eval-cond (cdr clauses) alist)))
 )
 
 ;; You need to write this one.
